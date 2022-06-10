@@ -1,5 +1,5 @@
 import { Form, Button } from 'react-bootstrap';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../UserContext';
 import Swal from 'sweetalert2';
@@ -28,7 +28,7 @@ export default function Login() {
 	function authentication(e) {
 		e.preventDefault();
 
-		fetch('http://localhost:4000/users/login', {
+		fetch('https://green-site-by-joe.herokuapp.com/users/login', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
@@ -51,7 +51,7 @@ export default function Login() {
 					text: 'You are now logged in!'
 				})
 
-				fetch('http://localhost:4000/users/profile', {
+				fetch('https://green-site-by-joe.herokuapp.com/users/profile', {
 					headers: {
 						Authorization: `Bearer ${data.accessToken}`
 					}
@@ -69,25 +69,23 @@ export default function Login() {
 					};
 				})
 
-
-
+			} else {
+				Swal.fire({
+					title: 'Oops',
+					icon: 'error',
+					text: 'Something went wrong. Check your credentials.'
+				})
 			}
-
-		})
-
-
-	}
-
-
-
-
+			setEmail('');
+			setPassword('');
+		});
+	};
 
 	return (
-
 		<Form onSubmit = {e => authentication(e)}>
 			<h1>Login</h1>
 			<Form.Group>
-				<Form.Label for="email">Email Address</Form.Label>
+				<Form.Label htmlFor="email">Email Address</Form.Label>
 				<Form.Control 
 	                type="email"
 	                placeholder="Your email"
@@ -102,14 +100,18 @@ export default function Login() {
 			</Form.Group>
 
 			<Form.Group>
-				<Form.Label>Password</Form.Label>
+				<Form.Label htmlFor="password">Password</Form.Label>
 				<Form.Control 
 	                type="password"
 	                placeholder="Your password"
 	                required
 	      			value={password}
                     onChange={e => setPassword(e.target.value)}
+                    id="password"
 				    />
+				<Form.Text className="text-muted">
+					Don't have an account yet? Register <Link to="/register" className="text-decoration-none">here.</Link>
+				</Form.Text>
 			</Form.Group>
 
 			{ buttonIsActive ?
@@ -124,6 +126,4 @@ export default function Login() {
 		</Form>
 
 		)
-
-
 }

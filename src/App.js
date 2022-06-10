@@ -9,21 +9,21 @@ import Login from './pages/Login';
 import ProductPage from './pages/ProductPage';
 import Register from './pages/Register';
 import Logout from './pages/Logout';
+import SpecificProduct from './pages/SpecificProduct';
+import CartPage from './pages/CartPage';
+import OrdersPage from './pages/OrdersPage';
 import ErrorPage from './pages/ErrorPage';
-
-
 
 function App() {
 
   const [user, setUser] = useState({
     accessToken: localStorage.getItem('accessToken'), 
-    isAdmin: localStorage.getItem('isAdmin') === true
+    isAdmin: localStorage.getItem('isAdmin') === 'true'
   });
 
   const unsetUser = () => {
     localStorage.clear();
   };
-
 
   return (
 
@@ -37,6 +37,9 @@ function App() {
             <Route path="/products" element={<ProductPage />}/>
             <Route path="/logout" element={<Logout />}/>
             <Route path="/register" element={<Register />}/>
+            <Route path="/cart" element={<CartPage />}/>
+            <Route path="/products/:productId" element={ <SpecificProduct /> }/>
+            <Route path="/orders" element={<OrdersPage />}/>
             <Route path="*" element={<ErrorPage />}/>
           </Routes>
         </Container>
